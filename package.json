@@ -1,5 +1,5 @@
 {
-  "homepage": "http://arunvijay13.github.io/task_manager",
+  "homepage": "http://arunvijay13.github.io/simple_login",
   "name": "reactapp",
   "version": "1.0.0",
   "description": "",
@@ -20,6 +20,7 @@
     "react-countup": "^4.3.3",
     "react-dom": "^16.13.1",
     "react-redux": "^7.2.1",
+    "react-router-dom": "^5.2.0",
     "redux": "^4.0.5",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.12",

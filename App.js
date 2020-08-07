@@ -1,54 +1,33 @@
 import React,{useState} from 'react'
+import {BrowserRouter as Router,Switch,Route} from 'react-router-dom'
 
-import Header from './components/Header.js'
-import Pending from './components/Pending.js'
-import Completed from './components/Completed.js'
+import Login from './components/Login.js'
+import {LogProvider} from './context/context.js'
+import Account from './components/Account.js'
+import Registration from './components/Registration.js'
+import Welcome from './components/Welcome.js'
 
-function App() {
+const App = () => {
 
-	const [pendingList,setpendingList] = useState([])
-	const [completedList,setcompletedList] = useState([])
-
-	const updatedList = (item) => {
-		setpendingList([...pendingList,item])
-	}
-
-	const removedList = (key) => {
-		const array = pendingList
-		setpendingList(array.filter( item => item !== key))
-	}
-
-	const deletedList = (key) => {
-		const array = completedList
-		setcompletedList(array.filter( item => item !== key))
-	}
-
-	const finishedList = (key) => {
-		const newList = pendingList
-		newList.map( item => 
-			{if( item == key)
-				setcompletedList([...completedList,item]) 
-			})
-		setpendingList(newList.filter( item => item !== key))
-	}
-
-	const workover = (key) => {
-		const addList = completedList
-		addList.map( item => 
-			{if( item == key)
-				setpendingList([...pendingList,item]) 
-			})
-		setcompletedList(addList.filter( item => item !== key))
-	}
+	const [value,setValue] = useState('true')
 
 	return (
+		<LogProvider>
 		<div className='container'>
-			<Header func={updatedList} />
-			<Pending list={pendingList} func1={removedList} func2={finishedList} />
-			<Completed list={completedList} func1={deletedList} func2={workover} />
+			{value ? <button className='start-btn' onClick={()=> setValue(false)}>Get Started</button> : 
+			<Router>
+				<div>
+				<Switch>				
+					<Route path ='/login' component={Login} />
+					<Route path ='/welcome' component={Welcome} />
+					<Route path ='/registration' component={Registration} />
+					<Route path ='/account' component={Account} />
+				</Switch>
+				</div>
+			</Router> }
 		</div>
+		</LogProvider>
 	)
 }
 
 export default App
-

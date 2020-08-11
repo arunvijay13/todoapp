@@ -21,7 +21,7 @@ function Card({detail:{confirmed,recovered,deaths,lastUpdate}}) {
 					</div>
 					<div className='card-text text-center'>{new Date(lastUpdate).toDateString()}</div>
 				</div>
-				<div className='card-footer bg-primary text-white text-center font-weight-bold text-uppercase'>No of Active Cases of covid-19</div>
+				<div className='card-footer bg-primary text-white text-center font-weight-bold text-uppercase'>No of Active Cases Covid-19</div>
 				</div>
 			</div>
 			<div className='col-sm-4 my-2'>

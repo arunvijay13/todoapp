@@ -12,10 +12,11 @@ function App() {
 	const [detail,setDetail] = useState({})
 	const [countries,setCountries] = useState([])
 	const [country,setCountry] = useState('')
+	const [bool,setBool] = useState(false)
 
 	useEffect(()=>{
 	   async function fetchApi(){
-	   		     setDetail(await fetchData(country))
+	   	setDetail(await fetchData(country))
 	   }
 	   fetchApi()
 	},[country])
@@ -27,13 +28,21 @@ function App() {
 		fetchName()
 	},[]) 
 
-	const changeCountry = (name) => setCountry(name)
+	const changeCountry = (name) => {
+		setCountry(name)
+		if(name !== 'global'){
+			setBool(true)
+
+		}else{
+			setBool(false)
+		}
+	}
 
 	return (
 		<div className='container'>
 			<Card detail={detail} />
 			<Chosen countries={countries} func={changeCountry} />
-			<Graph detail={detail} country />
+			<Graph detail={detail} bool={bool} />
 		</div>
 	)
 }

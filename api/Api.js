@@ -2,10 +2,13 @@ const url = 'https://covid19.mathdro.id/api'
 
 
 export const fetchData = async (country) => {
+	
 	let newValue = url	
-	if(country){
+	
+	if(country !== 'global' && country !== '' ){
 		newValue = `${url}/countries/${country}`
 	}
+
 	const response = await fetch(newValue)
 	const {confirmed,recovered,deaths,lastUpdate} =  await response.json()
 	return {confirmed,recovered,deaths,lastUpdate}

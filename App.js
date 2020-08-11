@@ -1,32 +1,40 @@
-import React,{useState} from 'react'
-import {BrowserRouter as Router,Switch,Route} from 'react-router-dom'
+import React,{useEffect,useState} from 'react'
+import 'regenerator-runtime/runtime'
 
-import Login from './components/Login.js'
-import {LogProvider} from './context/context.js'
-import Account from './components/Account.js'
-import Registration from './components/Registration.js'
-import Welcome from './components/Welcome.js'
+import Card from './components/Card.js'
+import Chosen from './components/Chosen.js'
+import Graph from './components/Graph.js'
+import {fetchData,fetchCountry} from './api/Api.js'
 
-const App = () => {
 
-	const [value,setValue] = useState('true')
+function App() {
+
+	const [detail,setDetail] = useState({})
+	const [countries,setCountries] = useState([])
+	const [country,setCountry] = useState('')
+
+	useEffect(()=>{
+	   async function fetchApi(){
+	   		     setDetail(await fetchData(country))
+	   }
+	   fetchApi()
+	},[country])
+
+	useEffect(()=>{
+		async function fetchName(){
+			setCountries(await fetchCountry())
+        }
+		fetchName()
+	},[]) 
+
+	const changeCountry = (name) => setCountry(name)
 
 	return (
-		<LogProvider>
 		<div className='container'>
-			{value ? <button className='start-btn' onClick={()=> setValue(false)}>Get Started</button> : 
-			<Router>
-				<div>
-				<Switch>				
-					<Route path ='/login' component={Login} />
-					<Route path ='/welcome' component={Welcome} />
-					<Route path ='/registration' component={Registration} />
-					<Route path ='/account' component={Account} />
-				</Switch>
-				</div>
-			</Router> }
+			<Card detail={detail} />
+			<Chosen countries={countries} func={changeCountry} />
+			<Graph detail={detail} country />
 		</div>
-		</LogProvider>
 	)
 }
 

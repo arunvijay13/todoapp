@@ -1,50 +1,54 @@
-import React,{useEffect,useState} from 'react'
-import 'regenerator-runtime/runtime'
+import React,{useState} from 'react'
 
-import Card from './components/Card.js'
-import Chosen from './components/Chosen.js'
-import Graph from './components/Graph.js'
-import {fetchData,fetchCountry} from './api/Api.js'
-
+import Header from './components/Header.js'
+import Pending from './components/Pending.js'
+import Completed from './components/Completed.js'
 
 function App() {
 
-	const [detail,setDetail] = useState({})
-	const [countries,setCountries] = useState([])
-	const [country,setCountry] = useState('')
-	const [bool,setBool] = useState(false)
+	const [pendingList,setpendingList] = useState([])
+	const [completedList,setcompletedList] = useState([])
 
-	useEffect(()=>{
-	   async function fetchApi(){
-	   	setDetail(await fetchData(country))
-	   }
-	   fetchApi()
-	},[country])
+	const updatedList = (item) => {
+		setpendingList([...pendingList,item])
+	}
 
-	useEffect(()=>{
-		async function fetchName(){
-			setCountries(await fetchCountry())
-        }
-		fetchName()
-	},[]) 
+	const removedList = (key) => {
+		const array = pendingList
+		setpendingList(array.filter( item => item !== key))
+	}
 
-	const changeCountry = (name) => {
-		setCountry(name)
-		if(name !== 'global'){
-			setBool(true)
+	const deletedList = (key) => {
+		const array = completedList
+		setcompletedList(array.filter( item => item !== key))
+	}
 
-		}else{
-			setBool(false)
-		}
+	const finishedList = (key) => {
+		const newList = pendingList
+		newList.map( item => 
+			{if( item == key)
+				setcompletedList([...completedList,item]) 
+			})
+		setpendingList(newList.filter( item => item !== key))
+	}
+
+	const workover = (key) => {
+		const addList = completedList
+		addList.map( item => 
+			{if( item == key)
+				setpendingList([...pendingList,item]) 
+			})
+		setcompletedList(addList.filter( item => item !== key))
 	}
 
 	return (
 		<div className='container'>
-			<Card detail={detail} />
-			<Chosen countries={countries} func={changeCountry} />
-			<Graph detail={detail} bool={bool} />
+			<Header func={updatedList} />
+			<Pending list={pendingList} func1={removedList} func2={finishedList} />
+			<Completed list={completedList} func1={deletedList} func2={workover} />
 		</div>
 	)
 }
 
 export default App
+
